@@ -42,7 +42,7 @@
 //
 // This package also defines a FlagSet wrapping the standard flag.FlagSet.
 //
-// Caveat
+// # Caveat
 //
 // In general Go flag parsing is preferred for new programs, because
 // it is not as pedantic about the number of dashes used to invoke
@@ -51,7 +51,7 @@
 // where, for legacy reasons, it is important to use exactly getopt(3)
 // syntax, such as when rewriting in Go an existing tool that already
 // uses getopt(3).
-package getopt // import "rsc.io/getopt"
+package getopt // import "mattmc3/getopt"
 
 import (
 	"flag"
@@ -93,6 +93,8 @@ type FlagSet struct {
 	name          string
 	errorHandling flag.ErrorHandling
 	outw          io.Writer
+	flags         []*flag.Flag
+	sortFlags     bool
 }
 
 func (f *FlagSet) out() io.Writer {
@@ -126,6 +128,7 @@ func (f *FlagSet) Init(name string, errorHandling flag.ErrorHandling) {
 	f.name = name
 	f.errorHandling = errorHandling
 	f.FlagSet.Usage = f.defaultUsage
+	f.sortFlags = true
 }
 
 func (f *FlagSet) init() {
@@ -278,11 +281,11 @@ func (f *FlagSet) Parse(args []string) error {
 			}
 			if b, ok := fg.Value.(boolFlag); ok && b.IsBoolFlag() {
 				if haveValue {
-					if err := fg.Value.Set(value); err != nil {
+					if err := f.FlagSet.Set(fg.Name, value); err != nil {
 						return f.failf("invalid boolean value %q for --%s: %v", value, name, err)
 					}
 				} else {
-					if err := fg.Value.Set("true"); err != nil {
+					if err := f.FlagSet.Set(fg.Name, "true"); err != nil {
 						return f.failf("invalid boolean flag %s: %v", name, err)
 					}
 				}
@@ -294,7 +297,7 @@ func (f *FlagSet) Parse(args []string) error {
 				}
 				value, args = args[0], args[1:]
 			}
-			if err := fg.Value.Set(value); err != nil {
+			if err := f.FlagSet.Set(fg.Name, value); err != nil {
 				return f.failf("invalid value %q for flag --%s: %v", value, name, err)
 			}
 			continue
@@ -316,7 +319,7 @@ func (f *FlagSet) Parse(args []string) error {
 				return f.failf("flag provided but not defined: -%s", name)
 			}
 			if b, ok := fg.Value.(boolFlag); ok && b.IsBoolFlag() {
-				if err := fg.Value.Set("true"); err != nil {
+				if err := f.FlagSet.Set(fg.Name, "true"); err != nil {
 					return f.failf("invalid boolean flag %s: %v", name, err)
 				}
 				continue
@@ -327,7 +330,7 @@ func (f *FlagSet) Parse(args []string) error {
 				}
 				arg, args = args[0], args[1:]
 			}
-			if err := fg.Value.Set(arg); err != nil {
+			if err := f.FlagSet.Set(fg.Name, arg); err != nil {
 				return f.failf("invalid value %q for flag -%s: %v", arg, name, err)
 			}
 			break // consumed arg
