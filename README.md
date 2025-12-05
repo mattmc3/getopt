@@ -2,7 +2,7 @@
 
 This fork of github.com/rsc/getopt adds control over flag ordering in help output.
 
-By default, flags are sorted lexicographically (like the standard library). To preserve insertion order instead, call `SetSortFlags(false)` on your `FlagSet`.
+By default, flags are sorted lexicographically (like the standard library). To preserve insertion order instead, call `SortFlags(false)` on your `FlagSet`.
 
 ```go
 fs := getopt.NewFlagSet("example", flag.ExitOnError)
