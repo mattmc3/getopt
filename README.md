@@ -20,7 +20,7 @@ Sorting affects `Visit`, `VisitAll`, and `PrintDefaults` output.
 
 [For full package documentation, see [https://godoc.org/rsc.io/getopt](https://godoc.org/rsc.io/getopt).]
 
-    package getopt // import "rsc.io/getopt"
+    package getopt // import "mattmc3/getopt"
 
 Package getopt parses command lines using [_getopt_(3)](http://man7.org/linux/man-pages/man3/getopt.3.html) syntax. It is a
 replacement for `flag.Parse` but still expects flags themselves to be defined
@@ -61,12 +61,3 @@ as the default `flag.Usage` except that it calls `getopt.PrintDefaults` instead
 of `flag.PrintDefaults`.
 
 This package also defines a `FlagSet` wrapping the standard `flag.FlagSet`.
-
-## Caveat
-
-In general Go flag parsing is preferred for new programs, because it is not
-as pedantic about the number of dashes used to invoke a flag (you can write
-`-verbose` or `--verbose` and the program does not care). This package is meant
-to be used in situations where, for legacy reasons, it is important to use
-exactly _getopt_(3) syntax, such as when rewriting in Go an existing tool that
-already uses _getopt_(3).
