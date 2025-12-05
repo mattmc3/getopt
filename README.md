@@ -1,9 +1,9 @@
 # mattmc3/getopt
 
-This fork of github.com/rsc/getopt adds more control over flag sorting so that the
-developer can maintain better control of help output.
+This fork of github.com/rsc/getopt adds the option to disable the default lexicographical flag sorting
+so that the developer can maintain better control of help output.
 
-By default, flags are sorted lexicographically (like the standard library). To preserve insertion order instead, call `SortFlags(false)` on your `FlagSet`.
+To preserve insertion order, call `SortFlags(false)` on your `FlagSet`.
 
 ```go
 fs := getopt.NewFlagSet("example", flag.ExitOnError)
