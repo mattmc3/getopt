@@ -1,4 +1,21 @@
-# rsc.io/getopt
+# mattmc3/getopt
+
+This fork of github.com/rsc/getopt adds control over flag ordering in help output.
+
+By default, flags are sorted lexicographically (like the standard library). To preserve insertion order instead, call `SetSortFlags(false)` on your `FlagSet`.
+
+```go
+fs := getopt.NewFlagSet("example", flag.ExitOnError)
+fs.SortFlags(false)  // Use insertion order
+// ... define flags in desired order ...
+```
+
+This affects `Visit`, `VisitAll`, and `PrintDefaults` output.
+
+**Implementation:** Uses code generation (`go generate`) to wrap standard library flag methods while tracking insertion order internally. Nothing else from the upstream
+getopt implementation is changed.
+
+## Original docs
 
 [For full package documentation, see [https://godoc.org/rsc.io/getopt](https://godoc.org/rsc.io/getopt).]
 
