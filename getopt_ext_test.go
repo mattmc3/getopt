@@ -148,15 +148,16 @@ func TestPrintDefaultsInsertionOrder(t *testing.T) {
 	fs.PrintDefaults()
 	out := buf.String()
 
-	// Check that zebra appears before alpha
-	zebraPos := strings.Index(out, "zebra")
-	alphaPos := strings.Index(out, "alpha")
+	wantInsertionOrder := `  --zebra
+    	z flag
+  --alpha
+    	a flag
+  --beta
+    	b flag
+`
 
-	if zebraPos == -1 || alphaPos == -1 {
-		t.Errorf("Expected to find both zebra and alpha in output")
-	}
-	if zebraPos > alphaPos {
-		t.Errorf("Expected zebra to appear before alpha in insertion order, got:\n%s", out)
+	if out != wantInsertionOrder {
+		t.Errorf("PrintDefaults insertion order:\nhave<\n%s>\nwant<\n%s>", out, wantInsertionOrder)
 	}
 }
 
@@ -174,14 +175,15 @@ func TestPrintDefaultsLexicographicalOrder(t *testing.T) {
 	fs.PrintDefaults()
 	out := buf.String()
 
-	// Check that alpha appears before zebra
-	zebraPos := strings.Index(out, "zebra")
-	alphaPos := strings.Index(out, "alpha")
+	wantLexicographicalOrder := `  --alpha
+    	a flag
+  --beta
+    	b flag
+  --zebra
+    	z flag
+`
 
-	if zebraPos == -1 || alphaPos == -1 {
-		t.Errorf("Expected to find both zebra and alpha in output")
-	}
-	if alphaPos > zebraPos {
-		t.Errorf("Expected alpha to appear before zebra in lexicographical order, got:\n%s", out)
+	if out != wantLexicographicalOrder {
+		t.Errorf("PrintDefaults lexicographical order:\nhave<\n%s>\nwant<\n%s>", out, wantLexicographicalOrder)
 	}
 }
