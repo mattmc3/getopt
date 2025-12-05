@@ -353,7 +353,7 @@ func PrintDefaults() {
 // about short/long alias pairs and prints the correct syntax for
 // long flags.
 func (f *FlagSet) PrintDefaults() {
-	f.FlagSet.VisitAll(func(fg *flag.Flag) {
+	f.VisitAll(func(fg *flag.Flag) {
 		name := fg.Name
 		short, long := "", ""
 		other := f.unalias[name]
