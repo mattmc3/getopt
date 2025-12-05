@@ -87,7 +87,7 @@ var tests = []struct {
 	{"-i 1", "-i 1"},
 	{"--india 1", "-i 1"},
 	{"--india=1", "-i 1"},
-	{"-i=1", `ERR: invalid value "=1" for flag -i: strconv.ParseInt: parsing "=1": invalid syntax`},
+	{"-i=1", `ERR: invalid value "=1" for flag -i: parse error`},
 	{"--i=1", "-i 1"},
 	{"-abc", "-a -b -c"},
 	{"--abc", `ERR: flag provided but not defined: --abc`},
